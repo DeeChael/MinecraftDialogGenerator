@@ -1,4 +1,4 @@
-# Minecraft Dialogs Generator
+# Minecraft Dialog Generator
 ## Example Usage
 ```kotlin
 confirmationDialog {
