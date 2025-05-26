@@ -11,6 +11,13 @@ import net.deechael.minecraftdialoggenerator.minecraftDialogGeneratorJson
 import net.kyori.adventure.text.Component
 
 @Serializable
+data class Multiline(
+    @SerialName("max_lines")
+    val maxLines: Int? = null,
+    val height: Int? = null
+)
+
+@Serializable
 data class TextInputControl(
     val key: String,
     @Contextual
@@ -19,6 +26,9 @@ data class TextInputControl(
     @SerialName("label_visible")
     val labelVisible: Boolean = true,
     val initial: String = "",
+    @SerialName("max_length")
+    val maxLength: Int = 32,
+    val multiline: Multiline? = null,
     val type: String = "minecraft:text"
 ) : InputControl() {
 
@@ -34,6 +44,8 @@ class TextInputControlBuilder : InputControlBuilder() {
     var width: Int = 200
     var labelVisible: Boolean = true
     var initial: String = ""
+    var maxLength: Int = 32
+    var multiline: Multiline? = null
 
     override fun build(): InputControl {
         return TextInputControl(
@@ -41,7 +53,9 @@ class TextInputControlBuilder : InputControlBuilder() {
             this.label!!,
             this.width,
             this.labelVisible,
-            this.initial
+            this.initial,
+            this.maxLength,
+            this.multiline,
         )
     }
 
@@ -61,4 +75,31 @@ fun TextInputControlBuilder.labelVisible(visibility: Boolean) {
 
 fun TextInputControlBuilder.initial(value: String) {
     initial = value
+}
+
+fun TextInputControlBuilder.maxLength(value: Int) {
+    this.maxLength = value
+}
+
+fun TextInputControlBuilder.multiline(builder: MultilineBuilder.() -> Unit) {
+    this.multiline = MultilineBuilder().apply(builder).build()
+}
+
+class MultilineBuilder {
+
+    var maxLines: Int? = null
+    var height: Int? = null
+
+    fun build(): Multiline {
+        return Multiline(maxLines, height)
+    }
+
+}
+
+fun MultilineBuilder.maxLines(value: Int) {
+    this.maxLines = value
+}
+
+fun MultilineBuilder.height(value: Int) {
+    this.height = value
 }

@@ -27,6 +27,7 @@ data class MultiActionInputDialog(
     val body: List<DialogBody>? = null,
     @SerialName("can_close_with_escape")
     val canCloseWithEscape: Boolean = true,
+    val columns: Int = 2,
     val type: String = "minecraft:multi_action_input_form"
 ) : Dialog() {
 
@@ -54,6 +55,7 @@ class MultiActionInputDialogBuilder : DialogBuilder() {
 
     var inputs: List<InputControl> = emptyList()
     var actions: List<SubmitMethod> = emptyList()
+    var columns: Int = 2
 
     override fun build(): Dialog {
         return MultiActionInputDialog(
@@ -63,6 +65,7 @@ class MultiActionInputDialogBuilder : DialogBuilder() {
             this.externalTitle,
             this.body,
             this.canCloseWithEscape,
+            this.columns
         )
     }
 
@@ -74,6 +77,10 @@ fun MultiActionInputDialogBuilder.inputs(builder: InputsBuilder.() -> Unit) {
 
 fun MultiActionInputDialogBuilder.actions(builder: SubmitMethodsBuilder.() -> Unit) {
     this.actions = SubmitMethodsBuilder().apply(builder).build()
+}
+
+fun MultiActionInputDialogBuilder.columns(value: Int) {
+    this.columns = value
 }
 
 fun SubmitMethodsBuilder.commandTemplate(builder: CommandTemplateSubmitMethodBuilder.() -> Unit) {

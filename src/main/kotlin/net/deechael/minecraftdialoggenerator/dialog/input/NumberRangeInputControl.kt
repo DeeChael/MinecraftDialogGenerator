@@ -16,10 +16,10 @@ data class NumberRangeInputControl(
     val label: Component,
     val start: Float, // inclusive
     val end: Float, // inclusive
-    val steps: Int, // 1 means only has start and end
+    val step: Float? = null,
     val labelFormat: String = "options.generic_value",
     val width: Int = 200,
-    val initial: Float = start, // will be rounded down nearest step, must be within range
+    val initial: Float? = null, // will be rounded down nearest step, must be within range
     val type: String = "minecraft:number_range"
 ) : InputControl() {
 
@@ -34,12 +34,10 @@ class NumberRangeInputControlBuilder : InputControlBuilder() {
     var label: Component? = null
     var start: Float? = null
     var end: Float? = null
-    var steps: Int? = null
+    var step: Float? = null
     var labelFormat: String = "options.generic_value"
     var width: Int = 200
-    var initial: Float = 0.0F
-
-    internal var setInitial: Boolean = false
+    var initial: Float? = null
 
     override fun build(): InputControl {
         return NumberRangeInputControl(
@@ -47,7 +45,7 @@ class NumberRangeInputControlBuilder : InputControlBuilder() {
             this.label!!,
             this.start!!,
             this.end!!,
-            this.steps!!,
+            this.step,
             this.labelFormat,
             this.width,
             this.initial
@@ -62,17 +60,14 @@ fun NumberRangeInputControlBuilder.label(content: RootComponentKt.() -> Unit) {
 
 fun NumberRangeInputControlBuilder.start(value: Float) {
     this.start = value
-    if (!this.setInitial) {
-        this.initial = value
-    }
 }
 
 fun NumberRangeInputControlBuilder.end(value: Float) {
     this.end = value
 }
 
-fun NumberRangeInputControlBuilder.steps(value: Int) {
-    this.steps = value
+fun NumberRangeInputControlBuilder.step(value: Float) {
+    this.step = value
 }
 
 fun NumberRangeInputControlBuilder.labelFormat(value: String) {
@@ -84,6 +79,5 @@ fun NumberRangeInputControlBuilder.width(value: Int) {
 }
 
 fun NumberRangeInputControlBuilder.initial(value: Float) {
-    this.setInitial = true
     initial = value
 }
